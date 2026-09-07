@@ -1,4 +1,10 @@
-## ADDED Requirements
+# Actuator Output Stack Specification
+
+## Purpose
+
+Preserve the released actuator stack, bought-hardware seats, and source evidence as an explicitly verified rigid assembly.
+
+## Requirements
 
 ### Requirement: Source geometry remains authoritative
 
@@ -29,12 +35,12 @@ Each planet gear SHALL remain centred on its STEP-defined M5x30 pin and 625 bear
 
 ### Requirement: Rigid assembly integrity is explicit
 
-Every represented rigid component SHALL be one connected body, and the complete actuator SHALL have no positive-volume rigid overlap except an exact, named inventory of overlaps already present in the upstream assembled design.
+Every represented rigid component SHALL be one connected body, and the complete actuator SHALL have no positive-volume rigid overlap except an exact, named inventory of source engagement and modeled bought-hardware seats.
 
 #### Scenario: Integrity at every named pose
 
 - **WHEN** the actuator is evaluated at home, one motor turn, and one output turn
-- **THEN** every rigid component is connected and the intersection pair set and volumes match the recorded source-seat inventory exactly
+- **THEN** every rigid component is connected, the intersection pair set matches the recorded seat inventory exactly, and every volume remains inside its reviewed pair-specific exact/faceted bounds
 
 ### Requirement: Source measurements cannot drift silently
 

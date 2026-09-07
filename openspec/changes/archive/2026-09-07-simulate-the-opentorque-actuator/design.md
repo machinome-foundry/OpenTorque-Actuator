@@ -57,9 +57,9 @@ The main STEP is internally assembled around the standard sun and planet product
 
 The motor and encoder board are absent from the STEP but named by the BOM. Simple CadQuery envelopes use catalogue dimensions, distinct rotor/stator bodies, and explicit radial clearance; they communicate placement and motion without pretending to reproduce vendor geometry. Fasteners and inserts remain omitted unless a contract needs their volume. The alternative—drawing recognisable vendor replicas—would add unlicensed detail and unsupported dimensions.
 
-### Treat upstream overlaps as an inventory
+### Treat source and envelope seats as an inventory
 
-The exact STEP may contain deliberate seated/contacting geometry or exported overlap. If the first full sweep finds positive-volume intersections, `simulation/seats.py` will record the exact pair set and measured volumes at home, and the contract will require that inventory rather than introduce a tolerance. A changed, added, or removed overlap then fails.
+The STEP contains positive-volume tooth engagement, while connected bought-hardware envelopes create explicit capture seats. `simulation/seats.py` records the exact pair set and a reviewed volume range per pair spanning faceted and exact readings. This is not a global ignored-volume tolerance: a changed pair beyond its own range, an added pair, or a removed pair fails.
 
 ### Detect source drift with measurements and a source fingerprint
 
@@ -72,6 +72,8 @@ The exact STEP may contain deliberate seated/contacting geometry or exported ove
 - The herringbone tooth trace has a half-count fundamental at the centre seam (9 lobes for the sun and 27 for the planet); the full tooth counts appear as the 18 and 54 harmonics. A tooth-count probe must record both rather than count naive radial maxima.
 - The BOM treats Herlea X8318S and Multistar 9235 as alternatives, but their published envelopes and shaft descriptions differ. The simulation uses the BOM's primary Multistar envelope and makes no interchangeability claim.
 - The current workspace `solid-node` command can import the STEP, but `StepAssembly` is not exported from `solid_node.node` as the public API skill describes. The implementation uses the supported CLI-generated scaffold and records this framework packaging discrepancy without inspecting framework source.
+- The home pose has 16 accepted positive-volume pairs: three housing/planet tooth pairs, three sun/planet tooth pairs, the retainer/outer-race capture, six carrier/planet-bearing captures, and three planet-bearing/gear captures. Exact tooth volumes differ materially from faceted volumes, so contracts retain per-pair ranges measured on both kernels rather than one cross-kernel scalar.
+- The 22 × 28 mm encoder board clears the source cover at Y=6 mm. Centering the same envelope at Y=0 creates a 59.739 mm³ faceted collision with the cover.
 
 ## Risks / Trade-offs
 

@@ -1,3 +1,7 @@
+## Purpose
+
+Represent the source planetary layout and its fixed-ring 8:1 kinematics with mechanically coherent, testable motion.
+
 ## ADDED Requirements
 
 ### Requirement: Source-defined planetary layout
@@ -25,7 +29,7 @@ The simulation SHALL derive every reducer angle from the input so that the fixed
 
 ### Requirement: Meshing geometry remains physically coherent
 
-The reducer SHALL keep the sun, planets, and fixed ring in their source-defined engagement without positive-volume rigid interference throughout a complete output revolution.
+The reducer SHALL keep the sun, planets, and fixed ring in their source-defined engagement without positive-volume rigid interference beyond the documented source-seat inventory throughout a complete output revolution.
 
 #### Scenario: Driven reduction sweep
 

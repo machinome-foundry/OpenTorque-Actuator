@@ -1,3 +1,7 @@
+## Purpose
+
+Provide one maker-facing actuator input and a compact, testable demonstration of the complete rigid machine at rest and in motion.
+
 ## ADDED Requirements
 
 ### Requirement: Builder-facing actuator control
@@ -34,4 +38,4 @@ The project SHALL retain no generated snapshots in Git but SHALL document inspec
 #### Scenario: Review generated snapshots
 
 - **WHEN** the documented snapshot commands are run
-- **THEN** the home and driven images show one coherent actuator, three evenly spaced planets, fixed housing geometry, and output motion about the common axis
+- **THEN** the isometric home and driven images show one coherent actuator and output motion about the common axis, while axial reducer images expose the three evenly spaced planets and their orbit

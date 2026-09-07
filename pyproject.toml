@@ -1,0 +1,13 @@
+[project]
+license = "AGPL-3.0-or-later AND CC-BY-SA-4.0"
+name = "opentorque-actuator-simulation"
+version = "0.0.0"
+description = "A solid-node simulation layer for the OpenTorque actuator"
+requires-python = ">=3.10"
+dependencies = ["solid-node"]
+
+[tool.solid-node]
+model = "simulation.actuator:OpenTorqueActuator"
+
+[tool.libresolid-studio]
+profile = "builder"
