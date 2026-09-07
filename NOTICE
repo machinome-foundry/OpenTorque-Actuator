@@ -1,0 +1,38 @@
+OpenTorque Actuator — source, modifications and license scope
+
+Original design: Gabrael Levine (G-Levine),
+https://github.com/G-Levine/OpenTorque-Actuator
+CC-BY-SA-4.0, https://creativecommons.org/licenses/by-sa/4.0/
+The upstream STEP, STL, images, BOM and other source material retain that
+grant and the complete root LICENSE.
+
+Luis Henrique Cassis Fagundes's original 2026 software in these paths is
+AGPL-3.0-or-later (simulation/LICENSE), as introduced in this history:
+- simulation/__init__.py, parts.py and kinematics.py;
+- simulation/test_*.py and simulation/tools/*.py;
+- original packaging/configuration in pyproject.toml and .gitignore.
+parts.py selects existing named STEP products without redrawing them;
+kinematics.py evaluates planetary relations from supplied tooth counts.
+The grant applies to original software, not to its input designs or output
+geometry. Source-specific data retains its upstream attribution.
+
+The source-integrating simulation files actuator.py, hardware.py, layout.py,
+output_stack.py, reducer.py and seats.py retain CC-BY-SA-4.0, including Luis's
+modifications. They encode the design-derived assembly, measured placements,
+hardware envelopes and seating inventory. docs/ and Foundry openspec/ design
+records, README.md, CREDITS, this NOTICE and simulation/README.md also retain
+CC-BY-SA-4.0. This is a split, not an AGPL-only design distribution.
+
+Modification record, 2026-09-21:
+The Foundry layer selects the original STEP products, records axes, tooth
+counts, source fingerprints and measured overlaps, adds fixed-ring reducer
+motion, and provides bought-hardware envelope stand-ins. It retains rather
+than silently repairs the source gear overlaps. docs/measurements.md and
+source comments record the readings, fits and hardware assumptions.
+Original STEP, STL and upstream documents are unchanged.
+
+Distributions and exports containing source design material or adaptations
+must retain applicable CC-BY-SA-4.0 attribution, change notices and ShareAlike
+terms. Include both license texts with mixed source. Executing AGPL software
+does not itself make all output AGPL. No upstream rights are replaced and
+previous recipients' grants remain intact.

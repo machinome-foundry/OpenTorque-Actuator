@@ -1,0 +1,17 @@
+OpenTorque Actuator
+Original author: Gabrael Levine (G-Levine).
+https://github.com/G-Levine/OpenTorque-Actuator
+License: Creative Commons Attribution-ShareAlike 4.0 International
+(CC-BY-SA-4.0), preserved in LICENSE.
+Source revision before the Foundry additions:
+412762e9a4ca424564d3ebed882db95ef4b22ed9 (not a release-version claim).
+
+Foundry simulation and supporting work:
+Copyright 2026 Luis Henrique Cassis Fagundes.
+The layer loads the original STEP products, measures their layout, represents
+bought hardware and adds articulation, controls and tests. The actuator
+design remains Gabrael Levine's work; NOTICE maps software and design scope.
+
+Licensing record added 2026-09-21 in a history rewrite. Preserved author
+dates do not backdate this publication. Prior recipients' grants and all
+upstream rights remain intact. No upstream endorsement is implied.
