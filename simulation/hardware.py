@@ -7,6 +7,7 @@
 import cadquery as cq
 
 from solid_node.node import CadQueryNode
+from solid_node.motion.joints import Revolute
 
 
 class CrossRollerOuterRace(CadQueryNode):
@@ -23,6 +24,8 @@ class CrossRollerInnerRace(CadQueryNode):
     """Moving inner envelope with radial clearance from the printed carrier."""
 
     color = "#a7adb3"
+
+    turn = Revolute(axis=(0, 0, 1), unit="deg")
 
     def render(self):
         return cq.Workplane("XY").circle(43.4).circle(40.1).extrude(8.0)
@@ -55,6 +58,8 @@ class MotorRotorEnvelope(CadQueryNode):
     """Rotating 92 × 22 mm Multistar can with a visible air gap."""
 
     color = "#d9a928"
+
+    spin = Revolute(axis=(0, 0, 1), unit="deg")
 
     def render(self):
         return cq.Workplane("XY").circle(46.0).circle(41.7).extrude(22.0)

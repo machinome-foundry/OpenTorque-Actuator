@@ -5,6 +5,9 @@
 """Exact parts selected from the upstream assembled STEP document."""
 
 from solid_node.node import StepNode
+from solid_node.motion.joints import Revolute
+
+from .layout import GEAR_GROUP_Z, PLANET_GEAR_Z, PLANET_RADIUS
 
 
 class ActuatorHousing(StepNode):
@@ -33,6 +36,8 @@ class PlanetCarrierA(StepNode):
     color = "#d8d2bf"
     angular_deflection = 0.5
 
+    turn = Revolute(axis=(0, 0, 1), unit="deg")
+
 
 class PlanetCarrierB(StepNode):
     """Main printed planet carrier."""
@@ -42,6 +47,8 @@ class PlanetCarrierB(StepNode):
     color = "#d8d2bf"
     angular_deflection = 0.5
 
+    turn = Revolute(axis=(0, 0, 1), unit="deg")
+
 
 class PlanetCarrierC(StepNode):
     """Input-side printed carrier plate."""
@@ -50,6 +57,8 @@ class PlanetCarrierC(StepNode):
     part = "Planet Carrier C"
     color = "#d8d2bf"
     angular_deflection = 0.5
+
+    turn = Revolute(axis=(0, 0, 1), unit="deg")
 
 
 class Backplate(StepNode):
@@ -78,6 +87,8 @@ class EncoderMagnetHolder(StepNode):
     color = "#d8d2bf"
     angular_deflection = 0.5
 
+    turn = Revolute(axis=(0, 0, 1), unit="deg")
+
 
 class CrossRollerBearingSource(StepNode):
     """Source CAD for the RA-8008C bearing; retained for measurement."""
@@ -96,6 +107,8 @@ class SunGear(StepNode):
     color = "#eee8d5"
     angular_deflection = 0.5
 
+    spin = Revolute(axis=(0, 0, 1), unit="deg")
+
 
 class PlanetGear(StepNode):
     """Standard 54-tooth herringbone planet selected from the assembly."""
@@ -104,6 +117,14 @@ class PlanetGear(StepNode):
     part = "Planet Gear"
     color = "#eee8d5"
     angular_deflection = 0.5
+
+    # The pin centre in PlanetUnit's frame, exactly PlanetUnit.render()'s
+    # translate((0, PLANET_RADIUS, GEAR_GROUP_Z + PLANET_GEAR_Z)).
+    spin = Revolute(
+        axis=(0, 0, 1),
+        at=(0, PLANET_RADIUS, GEAR_GROUP_Z + PLANET_GEAR_Z),
+        unit="deg",
+    )
 
 
 class PlanetBearingSource(StepNode):

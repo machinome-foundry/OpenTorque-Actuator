@@ -24,8 +24,8 @@ class OpenTorqueActuatorTest(TestCase):
     def test_driver_reaches_every_motion_group(self):
         try:
             self.node.set_state(input_angle=360.0)
-            self.assertEqual(self.node.reducer.input_angle.value, 360.0)
-            self.assertEqual(self.node.output_stack.output_angle.value, 45.0)
+            self.assertEqual(self.node.reducer.sun_gear.spin.value, 360.0)
+            self.assertEqual(self.node.output_stack.planet_carrier_b.turn.value, 45.0)
         finally:
             self.node.set_state(input_angle=0.0)
 
@@ -70,7 +70,7 @@ class ActuatorPosePreviewTest(TestCase):
     def test_time_one_is_one_motor_turn(self):
         try:
             self.node.set_keyframe(1.0)
-            self.assertEqual(self.node.reducer.input_angle.value, 360.0)
-            self.assertEqual(self.node.output_stack.output_angle.value, 45.0)
+            self.assertEqual(self.node.reducer.sun_gear.spin.value, 360.0)
+            self.assertEqual(self.node.output_stack.planet_carrier_b.turn.value, 45.0)
         finally:
             self.node.clear_keyframe()

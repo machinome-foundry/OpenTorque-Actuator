@@ -4,19 +4,19 @@
 
 """Rigid fixed-ring planetary relations derived from source tooth counts."""
 
-from .layout import PLANET_TEETH, REDUCTION, SUN_TEETH
+from .layout import CARRIER_RATIO, SUN_PLANET_MESH
 
 
 def output_angle(input_angle):
     """Carrier/output angle for the fixed 126-tooth ring."""
 
-    return input_angle / REDUCTION
+    return input_angle * CARRIER_RATIO
 
 
 def planet_relative_angle(input_angle):
     """Planet spin in its orbiting carrier frame."""
 
-    return -(SUN_TEETH / PLANET_TEETH) * (input_angle - output_angle(input_angle))
+    return SUN_PLANET_MESH * (input_angle - output_angle(input_angle))
 
 
 def planet_absolute_angle(input_angle):

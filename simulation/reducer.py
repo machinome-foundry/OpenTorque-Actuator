@@ -5,17 +5,19 @@
 """Planetary reduction stage of the OpenTorque actuator."""
 
 from solid_node.node import AssemblyNode
-from solid_node.motion.ports import RotationalPort
+from solid_node.motion.joints import Revolute
 from solid_node.simulation import Driver
 
 from .hardware import PlanetBearing
-from .kinematics import output_angle, planet_relative_angle
+from .kinematics import output_angle
 from .layout import (
+    CARRIER_RATIO,
     GEAR_GROUP_Z,
     PLANET_BEARING_Z,
     PLANET_GEAR_Z,
     PLANET_PHASES,
     PLANET_RADIUS,
+    SUN_PLANET_MESH,
 )
 from .parts import PlanetGear, PlanetPin, SunGear
 
@@ -23,7 +25,8 @@ from .parts import PlanetGear, PlanetPin, SunGear
 class PlanetUnit(AssemblyNode):
     """One source planet, its connected bearing envelope, and source pin."""
 
-    spin = RotationalPort(unit="deg")
+    orbit = Revolute(axis=(0, 0, 1), unit="deg")
+
     planet_gear = PlanetGear()
     bearing = PlanetBearing()
     pin = PlanetPin()
@@ -38,37 +41,33 @@ class PlanetUnit(AssemblyNode):
         # The STEP pin product is modelled in context at Y=27 and Z=-3..27.
         self.pin.translate((0.0, 0.0, GEAR_GROUP_Z))
 
-    def simulate(self):
-        spin = self.spin.value
-        if spin is None:
-            raise ValueError("PlanetUnit.spin must be bound by its parent")
-        self.planet_gear.rotate(spin, (0.0, 0.0, 1.0))
-
 
 class PlanetaryReducer(AssemblyNode):
     """Sun and three planets of the fixed-ring 8:1 reducer."""
 
-    input_angle = RotationalPort(unit="deg")
     sun_gear = SunGear()
     planet_1 = PlanetUnit()
     planet_2 = PlanetUnit()
     planet_3 = PlanetUnit()
 
+    # The sun's angle seen from the carrier: the frame a planetary mesh is
+    # read in. All three planets share the same orbit (the three sentences
+    # below give it to them with the same law), so planet_1's is as valid a
+    # term as any other; only a driven end has a single binder, so this one
+    # coordinate is free to source all three mesh relations below.
+    sun_in_carrier = sun_gear.spin - planet_1.orbit
+
+    sun_gear.spin.drives(planet_1.orbit, ratio=CARRIER_RATIO)
+    sun_gear.spin.drives(planet_2.orbit, ratio=CARRIER_RATIO)
+    sun_gear.spin.drives(planet_3.orbit, ratio=CARRIER_RATIO)
+    sun_in_carrier.drives(planet_1.planet_gear.spin, ratio=SUN_PLANET_MESH)
+    sun_in_carrier.drives(planet_2.planet_gear.spin, ratio=SUN_PLANET_MESH)
+    sun_in_carrier.drives(planet_3.planet_gear.spin, ratio=SUN_PLANET_MESH)
+
     def render(self):
         self.sun_gear.translate((0.0, 0.0, GEAR_GROUP_Z))
         self.planet_2.rotate(PLANET_PHASES[1], (0.0, 0.0, 1.0))
         self.planet_3.rotate(PLANET_PHASES[2], (0.0, 0.0, 1.0))
-
-    def simulate(self):
-        angle = self.input_angle.value
-        if angle is None:
-            raise ValueError("PlanetaryReducer.input_angle must be bound by its parent")
-        self.sun_gear.rotate(angle, (0.0, 0.0, 1.0))
-        carrier_angle = output_angle(angle)
-        spin = planet_relative_angle(angle)
-        for planet in (self.planet_1, self.planet_2, self.planet_3):
-            self.connect(spin, planet.spin)
-            planet.rotate(carrier_angle, (0.0, 0.0, 1.0))
 
 
 class ReducerPreview(AssemblyNode):
@@ -77,8 +76,7 @@ class ReducerPreview(AssemblyNode):
     input_angle = Driver(default=0.0, range=(-2880.0, 2880.0), unit="deg")
     reducer = PlanetaryReducer()
 
-    def simulate(self):
-        self.connect(self.input_angle, self.reducer.input_angle)
+    input_angle.drives(reducer.sun_gear.spin)
 
     @property
     def output_angle(self):
@@ -91,4 +89,4 @@ class ReducerPosePreview(AssemblyNode):
     reducer = PlanetaryReducer()
 
     def simulate(self):
-        self.connect(360.0 * self.time, self.reducer.input_angle)
+        self.reducer.sun_gear.spin = 360.0 * self.time

@@ -5,7 +5,6 @@
 """Ground-up output stack for the OpenTorque actuator."""
 
 from solid_node.node import AssemblyNode
-from solid_node.motion.ports import RotationalPort
 
 from .hardware import CrossRollerInnerRace, CrossRollerOuterRace
 from .layout import SEAT_WITNESS
@@ -24,8 +23,6 @@ from .parts import (
 class OutputStack(AssemblyNode):
     """Source-defined shell, carrier, output bearing and encoder-side prints."""
 
-    output_angle = RotationalPort(unit="deg")
-
     actuator_housing = ActuatorHousing()
     bearing_retainer = BearingRetainer()
     planet_carrier_a = PlanetCarrierA()
@@ -37,6 +34,13 @@ class OutputStack(AssemblyNode):
     cross_roller_outer = CrossRollerOuterRace()
     cross_roller_inner = CrossRollerInnerRace()
 
+    # planet_carrier_b is the one rigid output body, printed and bought in
+    # five pieces; the other four turn with it.
+    planet_carrier_b.turn.drives(planet_carrier_a.turn)
+    planet_carrier_b.turn.drives(planet_carrier_c.turn)
+    planet_carrier_b.turn.drives(encoder_magnet_holder.turn)
+    planet_carrier_b.turn.drives(cross_roller_inner.turn)
+
     def render(self):
         # Witness gaps make source-coincident seats decidable on both kernels.
         self.bearing_retainer.translate((0.0, 0.0, SEAT_WITNESS))
@@ -47,16 +51,6 @@ class OutputStack(AssemblyNode):
         self.cross_roller_outer.translate((0.0, 0.0, 62.5 + 2 * SEAT_WITNESS))
         self.cross_roller_inner.translate((0.0, 0.0, 62.5 + SEAT_WITNESS))
 
-    def simulate(self):
-        angle = self.output_angle.value
-        if angle is None:
-            raise ValueError("OutputStack.output_angle must be bound by its parent")
-        self.planet_carrier_a.rotate(angle, (0.0, 0.0, 1.0))
-        self.planet_carrier_b.rotate(angle, (0.0, 0.0, 1.0))
-        self.planet_carrier_c.rotate(angle, (0.0, 0.0, 1.0))
-        self.encoder_magnet_holder.rotate(angle, (0.0, 0.0, 1.0))
-        self.cross_roller_inner.rotate(angle, (0.0, 0.0, 1.0))
-
 
 class OutputStackPreview(AssemblyNode):
     """Ground-up preview binding the output stack at its source home pose."""
@@ -64,4 +58,4 @@ class OutputStackPreview(AssemblyNode):
     output_stack = OutputStack()
 
     def simulate(self):
-        self.connect(0.0, self.output_stack.output_angle)
+        self.output_stack.planet_carrier_b.turn = 0.0

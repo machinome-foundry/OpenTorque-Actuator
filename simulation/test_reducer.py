@@ -113,6 +113,6 @@ class ReducerPosePreviewTest(TestCase):
     def test_time_one_is_one_motor_turn(self):
         try:
             self.node.set_keyframe(1.0)
-            self.assertEqual(self.node.reducer.input_angle.value, 360.0)
+            self.assertEqual(self.node.reducer.sun_gear.spin.value, 360.0)
         finally:
             self.node.clear_keyframe()

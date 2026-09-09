@@ -8,7 +8,7 @@ from solid_node.node import AssemblyNode
 from solid_node.simulation import Driver, Instruction
 
 from .hardware import EncoderBoardEnvelope, MotorRotorEnvelope, MotorStatorEnvelope
-from .kinematics import output_angle
+from .layout import CARRIER_RATIO
 from .output_stack import OutputStack
 from .reducer import PlanetaryReducer
 
@@ -30,6 +30,11 @@ class OpenTorqueActuator(AssemblyNode):
     motor_rotor = MotorRotorEnvelope()
     encoder_board = EncoderBoardEnvelope()
 
+    # The rotor's spin IS the machine's drive coordinate: keyed to the sun
+    # directly, and to the output carrier through the fixed-ring reduction.
+    motor_rotor.spin.drives(reducer.sun_gear.spin)
+    motor_rotor.spin.drives(output_stack.planet_carrier_b.turn, ratio=CARRIER_RATIO)
+
     def render(self):
         # The 22 mm can ends at the source sun's Z=35 mm rear face.
         self.motor_rotor.translate((0.0, 0.0, 13.0))
@@ -40,16 +45,11 @@ class OpenTorqueActuator(AssemblyNode):
         self.encoder_board.translate((0.0, 6.0, -15.65))
 
     def simulate(self):
-        self.motor_rotor.rotate(self.input_angle, (0.0, 0.0, 1.0))
-        self.connect(self.input_angle, self.reducer.input_angle)
-        self.connect(output_angle(self.input_angle), self.output_stack.output_angle)
+        self.motor_rotor.spin = self.input_angle
 
 
 class ActuatorPosePreview(OpenTorqueActuator):
     """Snapshot-only preview: one motor turn from ``time=0`` to ``time=1``."""
 
     def simulate(self):
-        angle = self.input_angle + 360.0 * self.time
-        self.motor_rotor.rotate(angle, (0.0, 0.0, 1.0))
-        self.connect(angle, self.reducer.input_angle)
-        self.connect(output_angle(angle), self.output_stack.output_angle)
+        self.motor_rotor.spin = self.input_angle + 360.0 * self.time
