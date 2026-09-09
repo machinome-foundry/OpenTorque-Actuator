@@ -232,3 +232,10 @@ not the implementer's — stop and report if one blocks the run.
       joints and couplings`, with the pose result and the test result in
       the body. Do not sync or archive this change; the orchestrator does
       that after review.
+
+## Review (orchestrator, 2026-09-09)
+
+Diff matches the reviewed proposal with its two review decisions (one
+`sun_in_carrier` derived coordinate sourcing all three planet meshes; the
+three port reads in tests moved onto the joints). Poses bit-identical on
+all five models; 20/20 green before and after. Archived.
