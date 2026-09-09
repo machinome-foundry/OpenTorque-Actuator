@@ -4,7 +4,8 @@
 
 """Planetary reduction stage of the OpenTorque actuator."""
 
-from solid_node.node import AssemblyNode, RotationalPort
+from solid_node.node import AssemblyNode
+from solid_node.motion.ports import RotationalPort
 from solid_node.simulation import Driver
 
 from .hardware import PlanetBearing
