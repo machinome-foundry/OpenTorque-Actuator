@@ -118,13 +118,7 @@ class PlanetGear(StepNode):
     color = "#eee8d5"
     angular_deflection = 0.5
 
-    # The pin centre in PlanetUnit's frame, exactly PlanetUnit.render()'s
-    # translate((0, PLANET_RADIUS, GEAR_GROUP_Z + PLANET_GEAR_Z)).
-    spin = Revolute(
-        axis=(0, 0, 1),
-        at=(0, PLANET_RADIUS, GEAR_GROUP_Z + PLANET_GEAR_Z),
-        unit="deg",
-    )
+    spin = Revolute(axis=(0, 0, 1), unit="deg")
 
 
 class PlanetBearingSource(StepNode):
