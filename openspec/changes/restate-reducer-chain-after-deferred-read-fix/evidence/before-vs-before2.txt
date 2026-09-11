@@ -1,0 +1,5 @@
+$ PYTHONPATH=. python capture_poses.py capture simulation.actuator:OpenTorqueActuator before.json
+captured 7 poses, 23 leaves -> before.json
+
+$ python capture_poses.py compare before2/OpenTorque-Actuator-OpenTorque-Actuator-before.json before.json
+max deviation 0.000e+00 over 7 poses

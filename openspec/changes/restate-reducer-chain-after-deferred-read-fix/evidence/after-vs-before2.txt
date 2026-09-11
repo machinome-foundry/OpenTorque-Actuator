@@ -1,0 +1,2 @@
+$ python capture_poses.py compare before2/OpenTorque-Actuator-OpenTorque-Actuator-before.json after.json
+max deviation 0.000e+00 over 7 poses

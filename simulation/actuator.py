@@ -8,7 +8,6 @@ from solid_node.node import AssemblyNode
 from solid_node.simulation import Driver, Instruction
 
 from .hardware import EncoderBoardEnvelope, MotorRotorEnvelope, MotorStatorEnvelope
-from .layout import CARRIER_RATIO
 from .output_stack import OutputStack
 from .reducer import PlanetaryReducer
 
@@ -31,34 +30,30 @@ class OpenTorqueActuator(AssemblyNode):
     encoder_board = EncoderBoardEnvelope()
 
     # The rotor's spin IS the machine's drive coordinate: keyed to the sun
-    # directly, and to the output carrier through the fixed-ring reduction.
+    # directly, and to the output carrier through the fixed-ring reduction,
+    # sourced from the coordinate the reducer's OWN relations already
+    # compute rather than restated from CARRIER_RATIO a second time.
     #
     # Task 9.6 of solid-node's whole-tree-fixpoint cycle (ADR-099) asked
-    # this line to be restated as `reducer.planet_1.orbit.drives(
-    # output_stack.planet_carrier_b.turn)`, sourcing the carrier motion
-    # from the coordinate the reducer's OWN relations already compute,
-    # so CARRIER_RATIO is written once instead of twice. Tried and
-    # reverted (evidence: openspec/changes/restate-reducer-chain-per-adr-099/
-    # proposal.md): on a freshly built instance the sentence resolves
-    # correctly, because `reducer.planet_1.orbit` starts unbound and the
-    # pass defers it properly (ADR-099's own contract). On every
-    # SUBSEQUENT `set_state` against the SAME instance it reads a STALE
-    # value instead: `attempt(Root)` (root's own relations, resolved
-    # before any child's phase runs) finds `reducer.planet_1.orbit`
-    # already non-None -- the value it was left holding at the end of
-    # the PREVIOUS pass, because `PlanetaryReducer` (the assembly whose
-    # phase would clear and recompute it this pass) has not run yet --
-    # and binds `output_stack.planet_carrier_b.turn` from it immediately
-    # instead of deferring to the tree-wide fixpoint that would see the
-    # fresh number. Measured directly against `capture_poses.py`'s own
-    # repeated-pose sequence on one instance: maximum deviation 4.320e+02
-    # over the project's 7 poses (`output_stack.*` bodies land on the
-    # PREVIOUS pose's carrier angle, not the current one). The ratio is
-    # therefore still stated twice, once here and once in the reducer,
-    # both reading `CARRIER_RATIO` from `layout.py` so the two numbers
-    # cannot drift, exactly as `move-onto-motion`'s Known gaps left it.
+    # for exactly this sentence and this project's own
+    # restate-reducer-chain-per-adr-099 change tried and reverted it: on a
+    # freshly built instance it resolved correctly (`reducer.planet_1.orbit`
+    # starts unbound, so the pass defers it, per ADR-099's own contract),
+    # but on every SUBSEQUENT `set_state` against the SAME instance
+    # `attempt(Root)` read a STALE value left over from the previous pass,
+    # because `PlanetaryReducer` (the assembly whose phase clears and
+    # recomputes that coordinate) had not run yet this pass -- measured at
+    # maximum deviation 4.320e+02 over the project's 7 poses. That was a
+    # framework defect, not a project limit: fixed upstream by
+    # solid-node's deferred-read-is-current change (archived
+    # solid-node/openspec/changes/archive/2026-09-11-deferred-read-is-current/),
+    # which has `ResolvedEnd.bound()` recognize a value bound by the
+    # attempting assembly or one of its own descendants during a PREVIOUS
+    # pass as unready, so this attempt defers to the tree-wide fixpoint
+    # instead of reading it early. Restated here now that the fix is
+    # current; see this change's own repose probe.
     motor_rotor.spin.drives(reducer.sun_gear.spin)
-    motor_rotor.spin.drives(output_stack.planet_carrier_b.turn, ratio=CARRIER_RATIO)
+    reducer.planet_1.orbit.drives(output_stack.planet_carrier_b.turn)
 
     def render(self):
         # The 22 mm can ends at the source sun's Z=35 mm rear face.

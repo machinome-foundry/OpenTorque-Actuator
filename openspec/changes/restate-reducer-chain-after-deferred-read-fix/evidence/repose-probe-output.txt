@@ -1,0 +1,5 @@
+$ PYTHONPATH=. python evidence/repro_repose.py
+input_angle=10.0: orbit=1.25 (exp 1.25)  carrier_b.turn=1.25 (exp 1.25)  OK
+input_angle=40.0: orbit=5.0 (exp 5.0)  carrier_b.turn=5.0 (exp 5.0)  OK
+input_angle=0.0: orbit=0.0 (exp 0.0)  carrier_b.turn=0.0 (exp 0.0)  OK
+input_angle=25.0: orbit=3.125 (exp 3.125)  carrier_b.turn=3.125 (exp 3.125)  OK
