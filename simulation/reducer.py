@@ -6,6 +6,7 @@
 
 from solid_node.node import AssemblyNode
 from solid_node.motion.joints import Revolute
+from solid_node.motion.ports import RotationalPort
 from solid_node.simulation import Driver
 
 from .hardware import PlanetBearing
@@ -76,17 +77,28 @@ class ReducerPreview(AssemblyNode):
     input_angle = Driver(default=0.0, range=(-2880.0, 2880.0), unit="deg")
     reducer = PlanetaryReducer()
 
-    input_angle.drives(reducer.sun_gear.spin)
+    # Named so a subclass may replace it (ADR-099, whole-tree fixpoint).
+    drive = input_angle.drives(reducer.sun_gear.spin)
 
     @property
     def output_angle(self):
         return output_angle(self.input_angle)
 
 
-class ReducerPosePreview(AssemblyNode):
-    """Snapshot-only reducer preview: one motor turn over normalized time."""
+class ReducerPosePreview(ReducerPreview):
+    """Snapshot-only reducer preview: one motor turn over normalized time.
 
-    reducer = PlanetaryReducer()
+    A SUBCLASS of `ReducerPreview` rather than a separate ground-up class:
+    it inherits `reducer` and REPLACES the base's named `drive` relation,
+    at the position the base's held, with one sourced from its own
+    time-bound port instead of `input_angle` (ADR-099, whole-tree
+    fixpoint: a subclass assigning a relation to a name a base used
+    replaces it; a bare statement stays additive).
+    """
+
+    free_run = RotationalPort(unit="deg")
+
+    drive = free_run.drives(ReducerPreview.reducer.sun_gear.spin)
 
     def simulate(self):
-        self.reducer.sun_gear.spin = 360.0 * self.time
+        self.free_run = 360.0 * self.time
