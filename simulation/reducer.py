@@ -4,10 +4,10 @@
 
 """Planetary reduction stage of the OpenTorque actuator."""
 
-from solid_node.node import AssemblyNode
-from solid_node.motion.joints import Revolute
-from solid_node.motion.ports import RotationalPort
-from solid_node.simulation import Driver
+from machinome.node import AssemblyNode
+from machinome.motion.joints import Revolute
+from machinome.motion.ports import RotationalPort
+from machinome.simulation import Driver
 
 from .hardware import PlanetBearing
 from .kinematics import output_angle

@@ -3,14 +3,14 @@
 Measured 2026-09-07 from commit `412762e` with:
 
 ```sh
-/home/asa/devel/libresolid-studio/.venv/bin/python simulation/tools/probe.py
+/home/asa/devel/machinome-studio/.venv/bin/python simulation/tools/probe.py
 ```
 
 The probe merges coincident STL vertices before asking about watertightness or connected bodies. The raw exports duplicate vertices at triangle boundaries, so an unprocessed split gives a false disconnected-body count.
 
 ## Assembly frame
 
-`STEP/opentorque.step` is the placement authority. `solid import-step` reports the gear group translated by `(0, 0, 40)` mm. Inside it, the three planet gears are placed at:
+`STEP/opentorque.step` is the placement authority. `machinome import-step` reports the gear group translated by `(0, 0, 40)` mm. Inside it, the three planet gears are placed at:
 
 | Planet | Rotation about +Z | Translation (mm) |
 | --- | ---: | --- |

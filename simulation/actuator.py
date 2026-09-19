@@ -4,8 +4,8 @@
 
 """Top-level OpenTorque actuator simulation."""
 
-from solid_node.node import AssemblyNode
-from solid_node.simulation import Driver, Instruction
+from machinome.node import AssemblyNode
+from machinome.simulation import Driver, Instruction
 
 from .hardware import EncoderBoardEnvelope, MotorRotorEnvelope, MotorStatorEnvelope
 from .output_stack import OutputStack
@@ -34,7 +34,7 @@ class OpenTorqueActuator(AssemblyNode):
     # sourced from the coordinate the reducer's OWN relations already
     # compute rather than restated from CARRIER_RATIO a second time.
     #
-    # Task 9.6 of solid-node's whole-tree-fixpoint cycle (ADR-099) asked
+    # Task 9.6 of machinome's whole-tree-fixpoint cycle (ADR-099) asked
     # for exactly this sentence and this project's own
     # restate-reducer-chain-per-adr-099 change tried and reverted it: on a
     # freshly built instance it resolved correctly (`reducer.planet_1.orbit`
@@ -45,8 +45,8 @@ class OpenTorqueActuator(AssemblyNode):
     # recomputes that coordinate) had not run yet this pass -- measured at
     # maximum deviation 4.320e+02 over the project's 7 poses. That was a
     # framework defect, not a project limit: fixed upstream by
-    # solid-node's deferred-read-is-current change (archived
-    # solid-node/openspec/changes/archive/2026-09-11-deferred-read-is-current/),
+    # machinome's deferred-read-is-current change (archived
+    # machinome/openspec/changes/archive/2026-09-11-deferred-read-is-current/),
     # which has `ResolvedEnd.bound()` recognize a value bound by the
     # attempting assembly or one of its own descendants during a PREVIOUS
     # pass as unready, so this attempt defers to the tree-wide fixpoint

@@ -2,12 +2,12 @@
 license = "AGPL-3.0-or-later AND CC-BY-SA-4.0"
 name = "opentorque-actuator-simulation"
 version = "0.0.0"
-description = "A solid-node simulation layer for the OpenTorque actuator"
+description = "A machinome simulation layer for the OpenTorque actuator"
 requires-python = ">=3.10"
-dependencies = ["solid-node"]
+dependencies = ["machinome"]
 
-[tool.solid-node]
+[tool.machinome]
 model = "simulation.actuator:OpenTorqueActuator"
 
-[tool.libresolid-studio]
+[tool.machinome-studio]
 profile = "builder"

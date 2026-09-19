@@ -11,7 +11,7 @@ from pathlib import Path
 
 import numpy as np
 
-from solid_node.test import TestCase
+from machinome.test import TestCase
 
 from .layout import SOURCE_Z_BOUNDS, STEP_SHA256
 from .output_stack import OutputStackPreview

@@ -30,7 +30,7 @@ The default build SHALL publish the full actuator with material-distinguishing c
 
 #### Scenario: Inspect the finite build
 
-- **WHEN** `solid build` succeeds
+- **WHEN** `machinome build` succeeds
 - **THEN** `viewer.json` contains the complete fixed, input, planet, and output groups, the `input_angle` driver, all three instructions, symbolic motion operations, and an existing model file for every rigid leaf
 
 ### Requirement: Visual evidence covers rest and motion

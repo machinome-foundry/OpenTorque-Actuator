@@ -6,11 +6,11 @@
 
 Run with the workspace Python from the project root:
 
-    /home/asa/devel/libresolid-studio/.venv/bin/python simulation/tools/probe.py
+    /home/asa/devel/machinome-studio/.venv/bin/python simulation/tools/probe.py
 
-The STEP occurrence report is obtained through the public ``solid import-step``
+The STEP occurrence report is obtained through the public ``machinome import-step``
 command because the current workspace package does not export the documented
-``StepAssembly`` helper from ``solid_node.node``.
+``StepAssembly`` helper from ``machinome.node``.
 """
 
 from __future__ import annotations

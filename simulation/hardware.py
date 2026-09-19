@@ -6,8 +6,8 @@
 
 import cadquery as cq
 
-from solid_node.node import CadQueryNode
-from solid_node.motion.joints import Revolute
+from machinome.node import CadQueryNode
+from machinome.motion.joints import Revolute
 
 
 class CrossRollerOuterRace(CadQueryNode):

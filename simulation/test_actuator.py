@@ -4,8 +4,8 @@
 
 """Whole-machine controls, scenario, and integrity contracts."""
 
-from solid_node.simulation import ScenarioTest, qualified_drivers, qualified_instructions
-from solid_node.test import TestCase
+from machinome.simulation import ScenarioTest, qualified_drivers, qualified_instructions
+from machinome.test import TestCase
 
 from .actuator import ActuatorPosePreview, OpenTorqueActuator
 from .seats import assert_seat_inventory

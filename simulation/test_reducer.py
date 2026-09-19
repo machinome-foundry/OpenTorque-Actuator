@@ -11,7 +11,7 @@ from pathlib import Path
 
 import numpy as np
 
-from solid_node.test import TestCase
+from machinome.test import TestCase
 
 from .kinematics import output_angle, planet_absolute_angle, planet_relative_angle
 from .reducer import ReducerPosePreview, ReducerPreview

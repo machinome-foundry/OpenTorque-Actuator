@@ -4,7 +4,7 @@
 
 """Ground-up output stack for the OpenTorque actuator."""
 
-from solid_node.node import AssemblyNode
+from machinome.node import AssemblyNode
 
 from .hardware import CrossRollerInnerRace, CrossRollerOuterRace
 from .layout import SEAT_WITNESS
