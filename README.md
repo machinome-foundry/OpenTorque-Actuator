@@ -17,7 +17,12 @@ image, BOM, print instruction, and licence file unchanged.
 
 From this repository, using the Machinome Studio workspace environment:
 
+`machinome-mechanics` is founded but not yet published on a package index.
+Until it is published, use its source checkout after this project on
+`PYTHONPATH`; the simulation requires Python 3.11 or newer.
+
 ```sh
+export PYTHONPATH="$PWD:/path/to/machinome-mechanics"
 /home/asa/devel/machinome-studio/.venv/bin/machinome build
 /home/asa/devel/machinome-studio/.venv/bin/machinome test --faceted simulation/parts.py
 /home/asa/devel/machinome-studio/.venv/bin/machinome test --faceted simulation/hardware.py

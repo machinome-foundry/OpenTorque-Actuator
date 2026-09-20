@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""Independent old-law evidence for the three production planet meshes."""
+
+import math
+
+from machinome.core.expressions import parse, render
+from solid2 import get_animation_time
+
+from simulation.layout import PLANET_TEETH, RING_TEETH, SUN_TEETH
+from simulation.reducer import ReducerPreview
+
+
+def old_carrier(sun):
+    return sun / (1.0 + RING_TEETH / SUN_TEETH)
+
+
+def old_local_spin(sun):
+    carrier = old_carrier(sun)
+    return -(SUN_TEETH / PLANET_TEETH) * (sun - carrier)
+
+
+model = ReducerPreview()
+units = (model.reducer.planet_1, model.reducer.planet_2,
+         model.reducer.planet_3)
+mesh_relations = [
+    record for record in model.reducer.__dict__['_relations']
+    if any(record.driven_owner is unit.planet_gear for unit in units)
+]
+assert len(mesh_relations) == 3
+
+# Reuse one instance and cross zero to cover the project's former stale-state
+# regression as well as signed and unwrapped working angles.
+for sun in (10.0, 40.0, 0.0, 25.0, -2880.0, -360.0, 360.0, 2880.0):
+    model.set_state(input_angle=sun)
+    carrier = old_carrier(sun)
+    local = old_local_spin(sun)
+    absolute = carrier + local
+    for unit in units:
+        assert math.isclose(unit.orbit.value, carrier, abs_tol=1e-12)
+        assert math.isclose(unit.planet_gear.spin.value, local, abs_tol=1e-12)
+        assert math.isclose(unit.orbit.value + unit.planet_gear.spin.value,
+                            absolute, abs_tol=1e-12)
+
+time = get_animation_time()
+carrier = -450.0 + 990.0 * time
+functions = {'__builtins__': {}}
+for record in mesh_relations:
+    rendered = render(parse(str(record.law.forward(carrier))))
+    for value in (-1.0, -0.25, 0.0, 0.25, 1.0, 1.5):
+        orbit = -450.0 + 990.0 * value
+        # Invert the independently derived 1:8 carrier ratio to recover sun.
+        expected = old_local_spin(orbit * 8.0)
+        actual = eval(rendered.replace('$t', repr(value)), functions, {})
+        assert math.isclose(actual, expected, abs_tol=1e-12)
+
+print('three actual numeric/deferred planet mesh laws match the independent old relation')

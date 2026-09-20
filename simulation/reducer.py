@@ -8,6 +8,7 @@ from machinome.node import AssemblyNode
 from machinome.motion.joints import Revolute
 from machinome.motion.ports import RotationalPort
 from machinome.simulation import Driver
+from machinome_mechanics import internal_mesh_angle
 
 from .hardware import PlanetBearing
 from .kinematics import output_angle
@@ -18,9 +19,17 @@ from .layout import (
     PLANET_GEAR_Z,
     PLANET_PHASES,
     PLANET_RADIUS,
-    SUN_PLANET_MESH,
+    PLANET_TEETH,
+    RING_TEETH,
 )
 from .parts import PlanetGear, PlanetPin, SunGear
+
+
+def _fixed_ring_planet_spin(orbit, planet):
+    """The fixed-ring mesh expressed in the planet's orbiting frame."""
+    return lambda carrier: (
+        internal_mesh_angle(0.0, RING_TEETH, PLANET_TEETH, carrier) - carrier
+    )
 
 
 class PlanetUnit(AssemblyNode):
@@ -51,19 +60,15 @@ class PlanetaryReducer(AssemblyNode):
     planet_2 = PlanetUnit()
     planet_3 = PlanetUnit()
 
-    # The sun's angle seen from the carrier: the frame a planetary mesh is
-    # read in. All three planets share the same orbit (the three sentences
-    # below give it to them with the same law), so planet_1's is as valid a
-    # term as any other; only a driven end has a single binder, so this one
-    # coordinate is free to source all three mesh relations below.
-    sun_in_carrier = sun_gear.spin - planet_1.orbit
-
     sun_gear.spin.drives(planet_1.orbit, ratio=CARRIER_RATIO)
     sun_gear.spin.drives(planet_2.orbit, ratio=CARRIER_RATIO)
     sun_gear.spin.drives(planet_3.orbit, ratio=CARRIER_RATIO)
-    sun_in_carrier.drives(planet_1.planet_gear.spin, ratio=SUN_PLANET_MESH)
-    sun_in_carrier.drives(planet_2.planet_gear.spin, ratio=SUN_PLANET_MESH)
-    sun_in_carrier.drives(planet_3.planet_gear.spin, ratio=SUN_PLANET_MESH)
+    planet_1.orbit.drives(planet_1.planet_gear.spin,
+                          law=_fixed_ring_planet_spin)
+    planet_2.orbit.drives(planet_2.planet_gear.spin,
+                          law=_fixed_ring_planet_spin)
+    planet_3.orbit.drives(planet_3.planet_gear.spin,
+                          law=_fixed_ring_planet_spin)
 
     def render(self):
         self.sun_gear.translate((0.0, 0.0, GEAR_GROUP_Z))

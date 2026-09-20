@@ -3,8 +3,8 @@ license = "AGPL-3.0-or-later AND CC-BY-SA-4.0"
 name = "opentorque-actuator-simulation"
 version = "0.0.0"
 description = "A machinome simulation layer for the OpenTorque actuator"
-requires-python = ">=3.10"
-dependencies = ["machinome"]
+requires-python = ">=3.11"
+dependencies = ["machinome", "machinome-mechanics"]
 
 [tool.machinome]
 model = "simulation.actuator:OpenTorqueActuator"
