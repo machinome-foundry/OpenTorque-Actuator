@@ -10,4 +10,4 @@ dependencies = ["machinome", "machinome-mechanics"]
 model = "simulation.actuator:OpenTorqueActuator"
 
 [tool.machinome-studio]
-profile = "builder"
+profile = "openspec-builder"
