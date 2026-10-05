@@ -15,6 +15,7 @@ from machinome.test import TestCase
 
 from .layout import SOURCE_Z_BOUNDS, STEP_SHA256
 from .output_stack import OutputStackPreview
+import cadquery
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -41,7 +42,7 @@ COAXIAL_PARTS = (
 def exact_bounds(node):
     """Return the source solid's exact local bounds, independent of STL facets."""
 
-    bounds = node.shape().BoundingBox()
+    bounds = cadquery.Shape.cast(node.shape()).BoundingBox()
     return np.array(
         (
             (bounds.xmin, bounds.ymin, bounds.zmin),
