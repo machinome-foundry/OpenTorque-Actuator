@@ -60,14 +60,14 @@ systemd-run --user --scope \
 
 Results:
 
-- `machinome test --faceted simulation/reducer.py`: 8/8 passed in 7.72 s,
+- `machinome test --mesh simulation/reducer.py`: 8/8 passed in 7.72 s,
   maximum RSS 591,060 KiB; log
   `/tmp/opentorque-internal-mesh-reducer-faceted.log`.
-- `machinome test --exact simulation/reducer.py`: 8/8 passed in 3.42 s,
+- `machinome test --brep simulation/reducer.py`: 8/8 passed in 3.42 s,
   maximum RSS 541,444 KiB; log
   `/tmp/opentorque-internal-mesh-reducer-exact.log`.
-- `machinome test --faceted simulation/output_stack.py`: 6/6 passed, then
-  `machinome test --faceted simulation/actuator.py`: 6/6 passed. The combined
+- `machinome test --mesh simulation/output_stack.py`: 6/6 passed, then
+  `machinome test --mesh simulation/actuator.py`: 6/6 passed. The combined
   scope took 16.96 s with maximum RSS 572,220 KiB; log
   `/tmp/opentorque-internal-mesh-supporting-faceted.log`.
 - `machinome build` passed, followed in the same scope by the snapshot below;

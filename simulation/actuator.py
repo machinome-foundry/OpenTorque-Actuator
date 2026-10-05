@@ -4,7 +4,7 @@
 
 """Top-level OpenTorque actuator simulation."""
 
-from machinome.node import AssemblyNode
+from machinome.node.assembly import AssemblyNode
 from machinome.simulation import Driver, Instruction
 
 from .hardware import EncoderBoardEnvelope, MotorRotorEnvelope, MotorStatorEnvelope

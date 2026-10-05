@@ -4,7 +4,7 @@
 
 """Exact parts selected from the upstream assembled STEP document."""
 
-from machinome.node import StepNode
+from machinome.node.step import StepNode
 from machinome.motion.joints import Revolute
 
 from .layout import GEAR_GROUP_Z, PLANET_GEAR_Z, PLANET_RADIUS

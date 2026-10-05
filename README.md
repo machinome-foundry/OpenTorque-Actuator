@@ -24,14 +24,14 @@ Until it is published, use its source checkout after this project on
 ```sh
 export PYTHONPATH="$PWD:/path/to/machinome-mechanics"
 /home/asa/devel/machinome-studio/.venv/bin/machinome build
-/home/asa/devel/machinome-studio/.venv/bin/machinome test --faceted simulation/parts.py
-/home/asa/devel/machinome-studio/.venv/bin/machinome test --faceted simulation/hardware.py
-/home/asa/devel/machinome-studio/.venv/bin/machinome test --faceted simulation/output_stack.py
-/home/asa/devel/machinome-studio/.venv/bin/machinome test --faceted simulation/reducer.py
-/home/asa/devel/machinome-studio/.venv/bin/machinome test --faceted simulation/actuator.py
+/home/asa/devel/machinome-studio/.venv/bin/machinome test --mesh simulation/parts.py
+/home/asa/devel/machinome-studio/.venv/bin/machinome test --mesh simulation/hardware.py
+/home/asa/devel/machinome-studio/.venv/bin/machinome test --mesh simulation/output_stack.py
+/home/asa/devel/machinome-studio/.venv/bin/machinome test --mesh simulation/reducer.py
+/home/asa/devel/machinome-studio/.venv/bin/machinome test --mesh simulation/actuator.py
 ```
 
-Omit `--faceted` for the slower exact-kernel certification. `machinome build`
+Omit `--mesh` for the slower exact-kernel certification. `machinome build`
 publishes `_build/viewer.json`; a machinome viewer presents the model's one
 driver and three demonstration buttons.
 

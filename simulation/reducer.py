@@ -4,7 +4,7 @@
 
 """Planetary reduction stage of the OpenTorque actuator."""
 
-from machinome.node import AssemblyNode
+from machinome.node.assembly import AssemblyNode
 from machinome.motion.joints import Revolute
 from machinome.motion.ports import RotationalPort
 from machinome.simulation import Driver

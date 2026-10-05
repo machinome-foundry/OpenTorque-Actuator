@@ -6,7 +6,7 @@
 
 import cadquery as cq
 
-from machinome.node import CadQueryNode
+from machinome.node.cadquery import CadQueryNode
 from machinome.motion.joints import Revolute
 
 
