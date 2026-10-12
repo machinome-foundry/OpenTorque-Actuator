@@ -8,7 +8,7 @@ from machinome.node.assembly import AssemblyNode
 from machinome.motion.joints import Revolute
 from machinome.motion.ports import RotationalPort
 from machinome.simulation import Driver
-from machinome_mechanics import internal_mesh_angle
+from machinome.mechanics import internal_mesh_angle
 
 from .hardware import PlanetBearing
 from .kinematics import output_angle
