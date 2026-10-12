@@ -78,7 +78,7 @@ The fresh nonzero axial image used:
 
 ```console
 /home/asa/devel/machinome-studio/.venv/bin/machinome snapshot \
-  simulation/reducer.py:ReducerPosePreview --renderer openscad --time 0.5 \
+  simulation/reducer.py:ReducerPosePreview --viewer openscad --time 0.5 \
   -o _build/internal-mesh-angle-axial.png --autocenter --viewall \
   --camera 0,0,50,0,0,0,130 --imgsize 700x700 --projection ortho --render
 ```
